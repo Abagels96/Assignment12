@@ -1,4 +1,4 @@
-create schema pizza_place;
+CREATE SCHEMA pizza_place;
 CREATE TABLE pizza_place.pizza (
     pizza_id INT NOT NULL PRIMARY KEY,
     pizza_type VARCHAR(100),
@@ -33,20 +33,20 @@ CREATE TABLE pizza_place.customers_pizza (
     FOREIGN KEY (pizza_id)
         REFERENCES pizza (pizza_id)
 );
-insert into customers_orders(customer_id, order_id) 
-values 
+INSERT INTO customers_orders(customer_id, order_id) 
+VALUES 
   (1, 1), 
   (2, 2), 
   (2, 3);
-insert into customers(
+INSERT INTO customers(
   customer_id, customer_first_name, 
   customer_last_name, customer_phone_number
 ) 
-values 
+VALUES
   (1, 'Trevor', 'Page', 2265554982), 
   (2, 'John', 'Doe', 5555559498);
-insert into customers_pizza(pizza_id, customer_id, quantity,order_id) 
-values 
+INSERT INTO customers_pizza(pizza_id, customer_id, quantity,order_id) 
+VALUES 
   (3, 1, 2,1), 
   (4, 1, 1,1), 
   (1, 1, 1,1), 
@@ -68,15 +68,15 @@ CREATE TABLE pizza_place.pizza_orders (
     FOREIGN KEY (order_id)
         REFERENCES orders (order_id)
 );
-insert into orders(order_id, order_date, order_time) 
-values 
+INSERT INTO orders(order_id, order_date, order_time) 
+VALUES
   (1, 20230910, 094700), 
   (2, 20230910, 132000), 
   (3, 20231010, 103700);
-insert into pizza(
+INSERT INTO pizza(
   pizza_id, pizza_type, pizza_price
 ) 
-values 
+VALUES 
   (1, 'Pepperoni and Cheese', 7.99), 
   (2, 'Vegetarian', 9.99), 
   (3, 'Meat Lovers', 14.99), 
@@ -92,23 +92,9 @@ FROM
         JOIN
     customers_pizza cp ON c.customer_id = cp.customer_id
         JOIN
-    pizza p ON cp.pizza_id = p.pizza_id
-WHERE
-    c.customer_id = 1 or c.customer_id=2;
--- sum of customer 2's pizza purchases
-SELECT 
-    c.customer_id,
-    customer_first_name,
-    customer_last_name,
-    SUM(cp.quantity * p.pizza_price) AS total_price
-FROM
-    customers c
-        JOIN
-    customers_pizza cp ON c.customer_id = cp.customer_id
-        JOIN
-    pizza p ON cp.pizza_id = p.pizza_id
-WHERE
-    c.customer_id = 2;
+    pizza p ON cp.pizza_id = p.pizza_id 
+    GROUP BY c.customer_id;
+
   -- orders by customers and date
 SELECT 
     o.order_date,
