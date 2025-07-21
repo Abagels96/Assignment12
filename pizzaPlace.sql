@@ -1,5 +1,5 @@
 CREATE SCHEMA pizza_place;
-CREATE TABLE pizza_place.pizza (
+CREATE TABLE pizza_place.pizzas (
     pizza_id INT NOT NULL PRIMARY KEY,
     pizza_type VARCHAR(100),
     pizza_price DECIMAL(5 , 2 )
@@ -23,7 +23,7 @@ CREATE TABLE pizza_place.customers_orders (
     FOREIGN KEY (order_id)
         REFERENCES orders (order_id)
 );
-CREATE TABLE pizza_place.customers_pizza (
+CREATE TABLE pizza_place.customers_pizzas (
     customer_id INT,
     pizza_id INT,
     quantity INT,
@@ -43,9 +43,9 @@ INSERT INTO customers(
   customer_last_name, customer_phone_number
 ) 
 VALUES
-  (1, 'Trevor', 'Page', 2265554982), 
-  (2, 'John', 'Doe', 5555559498);
-INSERT INTO customers_pizza(pizza_id, customer_id, quantity,order_id) 
+  (1, 'Trevor', 'Page', '2265554982'), 
+  (2, 'John', 'Doe', '5555559498');
+INSERT INTO customers_pizzas(pizza_id, customer_id, quantity,order_id) 
 VALUES 
   (3, 1, 2,1), 
   (4, 1, 1,1), 
@@ -56,24 +56,13 @@ VALUES
   (4, 2, 1,3);
   
 
-SELECT 
-    *
-FROM
-    customers_pizza;
-CREATE TABLE pizza_place.pizza_orders (
-    pizza_id INT NOT NULL,
-    order_id INT NOT NULL,
-    FOREIGN KEY (pizza_id)
-        REFERENCES pizza (pizza_id),
-    FOREIGN KEY (order_id)
-        REFERENCES orders (order_id)
-);
+
 INSERT INTO orders(order_id, order_date, order_time) 
 VALUES
   (1, 20230910, 094700), 
   (2, 20230910, 132000), 
   (3, 20231010, 103700);
-INSERT INTO pizza(
+INSERT INTO pizzas(
   pizza_id, pizza_type, pizza_price
 ) 
 VALUES 
@@ -90,9 +79,9 @@ SELECT
 FROM
     customers c
         JOIN
-    customers_pizza cp ON c.customer_id = cp.customer_id
+    customers_pizzas cp ON c.customer_id = cp.customer_id
         JOIN
-    pizza p ON cp.pizza_id = p.pizza_id 
+    pizzas p ON cp.pizza_id = p.pizza_id 
     GROUP BY c.customer_id;
 
   -- orders by customers and date
@@ -108,9 +97,9 @@ FROM
         JOIN
     customers c ON co.customer_id = c.customer_id
         JOIN
-    customers_pizza cp ON cp.customer_id = c.customer_id
+    customers_pizzas cp ON cp.customer_id = c.customer_id
         AND cp.order_id = o.order_id
         JOIN
-    pizza p ON cp.pizza_id = p.pizza_id
+    pizzas p ON cp.pizza_id = p.pizza_id
 GROUP BY o.order_date , c.customer_id , o.order_id;
 
