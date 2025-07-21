@@ -94,7 +94,7 @@ FROM
         JOIN
     pizza p ON cp.pizza_id = p.pizza_id
 WHERE
-    c.customer_id = 1;
+    c.customer_id = 1 or c.customer_id=2;
 -- sum of customer 2's pizza purchases
 SELECT 
     c.customer_id,
@@ -111,7 +111,8 @@ WHERE
     c.customer_id = 2;
   -- orders by customers and date
 SELECT 
-    o.*,
+    o.order_date,
+    o.order_id,
     c.customer_id,
     SUM(p.pizza_price * cp.quantity) AS total_price
 FROM
@@ -125,5 +126,5 @@ FROM
         AND cp.order_id = o.order_id
         JOIN
     pizza p ON cp.pizza_id = p.pizza_id
-GROUP BY o.order_date , o.order_time , c.customer_id , o.order_id;
+GROUP BY o.order_date , c.customer_id , o.order_id;
 
