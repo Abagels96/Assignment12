@@ -69,7 +69,7 @@ VALUES
   (1, 'Pepperoni and Cheese', 7.99), 
   (2, 'Vegetarian', 9.99), 
   (3, 'Meat Lovers', 14.99), 
-  (4, 'Hawaian', 12.99);
+  (4, 'Hawaiian', 12.99);
 -- sum of customer1's pizza purchases
 SELECT 
     c.customer_id,
